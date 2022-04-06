@@ -4,25 +4,41 @@ import * as yup from "yup";
 import { TextField, Button } from "@material-ui/core";
 
 const validationSchema = yup.object({
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+  firstName: yup
+    .string()
+    .min(2, "First Name is too short")
+    .max(25, "First Name is too long")
+    .required("First Name is required"),
+  lastName: yup
+    .string()
+    .required("Last Name is required")
+    .min(2, "Last Name is too short")
+    .max(25, "Last Name is too long"),
   username: yup
     .string()
     .min(4, "Username must be at lest 4 characters long")
+    .max(20, "Username is too long")
     .required("Username is required"),
   email: yup.string().email("Email is invalid").required("Email is required"),
   password: yup
     .string()
     .required("Please Enter your password")
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
+      "Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
     ),
   confirmpassword: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match")
     .required("Password confirm is required"),
-  checkbox: yup.bool().oneOf([true], "Accept Terms & Conditions is required"),
+  consent: yup
+    .bool()
+    .test(
+      "consent",
+      "You have to agree with our Terms and Conditions!",
+      (value) => value === true
+    )
+    .required("You have to agree with our Terms and Conditions!"),
 });
 
 function App() {
@@ -37,7 +53,7 @@ function App() {
             email: "",
             password: "",
             confirmpassword: "",
-            checkbox: "",
+            consent: false,
           }}
           onSubmit={(values) => {
             alert(JSON.stringify(values, null, 2));
@@ -125,6 +141,19 @@ function App() {
                   formik.errors.confirmpassword
                 }
               />
+              <div className="checkbox-field" style={{ marginTop: 30 }}>
+                <label htmlFor="consent">
+                  <input
+                    name="consent"
+                    type="checkbox"
+                    onChange={formik.handleChange}
+                  />
+                  <span>Terms and conditions</span>
+                </label>
+                <p className="MuiFormHelperText-root Mui-error">
+                  {formik.errors.consent}
+                </p>
+              </div>
 
               <Button
                 style={{ marginTop: 30 }}
