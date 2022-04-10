@@ -11,6 +11,64 @@
   margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .registration-form {
+    padding: 50px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    width: 100%;
+  }
+
+  .registration-form {
+    padding: 100px;
+  }
+}
+
 .checkbox-field {
   text-align: left;
+}
+
+body {
+  background-color: #90cad7;
+}
+
+form {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+@media (max-width: 768px) {
+  form {
+    padding: 20px;
+  }
+}
+
+.headerForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.headerForm h2 {
+  text-align: left;
+  color: #fff;
+  padding-top: 25px;
+}
+
+.headerForm img {
+  display: block;
+  margin-left: auto;
+}
+
+img {
+  width: 125px;
+  object-fit: cover;
 }
