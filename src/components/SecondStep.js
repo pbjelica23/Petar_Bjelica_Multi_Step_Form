@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { TextField, Button } from "@material-ui/core";
 import img1 from "../assets/images/monkey2.png";
+import Loader from "./Loader";
+import { useState, useEffect } from "react";
 
 const validationSchema2 = yup.object({
   email: yup.string().email("Email is invalid").required("Email is required"),
@@ -28,96 +30,115 @@ const validationSchema2 = yup.object({
 });
 
 export default function StepTwo(props) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let timer = setTimeout(() => setLoaded(true), 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const handleSubmit = (values) => {
     props.next(values);
-    //alert(JSON.stringify(values, null, 2));
   };
+
   return (
-    <div>
-      <div className="headerForm">
-        <h2>Registration: Step Two</h2>
-        <img src={img1} alt="Monkey Illustration" />
-      </div>
-      <Formik
-        initialValues={props.data}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema2}
-      >
-        {(formik) => (
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              style={{ marginTop: 30 }}
-              fullWidth
-              id="email"
-              name="email"
-              label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            <TextField
-              style={{ marginTop: 30 }}
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
-            <TextField
-              style={{ marginTop: 30 }}
-              fullWidth
-              id="confirmpassword"
-              name="confirmpassword"
-              label="Confirm password"
-              value={formik.values.confirmpassword}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.confirmpassword &&
-                Boolean(formik.errors.confirmpassword)
-              }
-              helperText={
-                formik.touched.confirmpassword && formik.errors.confirmpassword
-              }
-            />
-            <div className="checkbox-field" style={{ marginTop: 30 }}>
-              <label htmlFor="consent">
-                <input
-                  name="consent"
-                  type="checkbox"
+    <div className="app">
+      {!loaded ? (
+        <Loader />
+      ) : (
+        <div>
+          <div className="headerForm">
+            <h2>Registration: Step Two</h2>
+            <img src={img1} alt="Monkey Illustration" />
+          </div>
+          <Formik
+            initialValues={props.data}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema2}
+          >
+            {(formik) => (
+              <form onSubmit={formik.handleSubmit}>
+                <TextField
+                  style={{ marginTop: 30 }}
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label="Email"
+                  value={formik.values.email}
                   onChange={formik.handleChange}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
                 />
-                <span>Terms and conditions</span>
-              </label>
-              <p className="MuiFormHelperText-root Mui-error">
-                {formik.errors.consent}
-              </p>
-            </div>
-            <Button
-              style={{ marginTop: 30 }}
-              type="button"
-              color="primary"
-              variant="contained"
-              fullWidth
-              onClick={() => props.prev(formik.values)}
-            >
-              Back
-            </Button>
-            <Button
-              style={{ marginTop: 30 }}
-              type="submit"
-              color="primary"
-              variant="contained"
-              fullWidth
-            >
-              Submit
-            </Button>
-          </form>
-        )}
-      </Formik>
+                <TextField
+                  style={{ marginTop: 30 }}
+                  fullWidth
+                  id="password"
+                  name="password"
+                  label="Password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+                <TextField
+                  style={{ marginTop: 30 }}
+                  fullWidth
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  label="Confirm password"
+                  value={formik.values.confirmpassword}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.confirmpassword &&
+                    Boolean(formik.errors.confirmpassword)
+                  }
+                  helperText={
+                    formik.touched.confirmpassword &&
+                    formik.errors.confirmpassword
+                  }
+                />
+                <div className="checkbox-field" style={{ marginTop: 30 }}>
+                  <label htmlFor="consent">
+                    <input
+                      name="consent"
+                      type="checkbox"
+                      id="consent"
+                      onChange={formik.handleChange}
+                    />
+                    <span>Terms and conditions</span>
+                  </label>
+                  <p className="MuiFormHelperText-root Mui-error">
+                    {formik.errors.consent}
+                  </p>
+                </div>
+                <Button
+                  style={{ marginTop: 30 }}
+                  type="button"
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => props.prev(formik.values)}
+                >
+                  Back
+                </Button>
+                <Button
+                  style={{ marginTop: 30 }}
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                >
+                  Submit
+                </Button>
+              </form>
+            )}
+          </Formik>
+        </div>
+      )}
     </div>
   );
 }
