@@ -3,14 +3,24 @@ import { useState } from "react";
 import StepOne from "./components/StepOne";
 import StepTwo from "./components/SecondStep";
 import SuccessMessage from "./components/SuccessMessage";
+import { useTranslation } from "react-i18next";
+import { Button } from "@material-ui/core";
+
+const lngs = {
+  en: { nativeName: "English" },
+  me: { nativeName: "Montenegrin" },
+};
+
 function App() {
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
     username: "",
     email: "",
+    phone: "",
     password: "",
     confirmpassword: "",
+    gender: "",
     consent: false,
   });
   const [currentStep, setCurrentStep] = useState(0);
@@ -41,9 +51,25 @@ function App() {
     <SuccessMessage data={data} />,
   ];
 
+  const { i18n } = useTranslation();
+
   return (
     <div className="container">
-      <div className="registration-form">{steps[currentStep]}</div>
+      <div className="languageSwitcher">
+        {Object.keys(lngs).map((lng) => (
+          <Button
+            key={lng}
+            variant={i18n.resolvedLanguage === lng ? "contained" : "outlined"}
+            color="primary"
+            type="submit"
+            style={{ marginRight: 20, marginTop: 20 }}
+            onClick={() => i18n.changeLanguage(lng)}
+          >
+            {lngs[lng].nativeName}
+          </Button>
+        ))}
+      </div>
+      {steps[currentStep]}
     </div>
   );
 }

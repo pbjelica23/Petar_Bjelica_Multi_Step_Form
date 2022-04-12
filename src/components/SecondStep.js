@@ -5,6 +5,7 @@ import { TextField, Button } from "@material-ui/core";
 import img1 from "../assets/images/monkey2.png";
 import Loader from "./Loader";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const validationSchema2 = yup.object({
   email: yup.string().email("Email is invalid").required("Email is required"),
@@ -12,8 +13,8 @@ const validationSchema2 = yup.object({
     .string()
     .required("Please Enter your password")
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
-      "Must Contain 6 Characters, One Lowercase, One Number and one special case Character"
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, one Lowercase, one uppercase One Number and one special character"
     ),
   confirmpassword: yup
     .string()
@@ -27,9 +28,16 @@ const validationSchema2 = yup.object({
       (value) => value === true
     )
     .required("You have to agree with our Terms and Conditions!"),
+  phone: yup
+    .string()
+    .min(8, "Phone must be at least 8 characters long")
+    .max(26, "Phone is too long")
+    .required("Phone is required"),
 });
 
 export default function StepTwo(props) {
+  const { t } = useTranslation();
+
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -44,13 +52,13 @@ export default function StepTwo(props) {
   };
 
   return (
-    <div className="app">
+    <div className="registration-form">
       {!loaded ? (
         <Loader />
       ) : (
         <div>
           <div className="headerForm">
-            <h2>Registration: Step Two</h2>
+            <h2>{t("secondRegister")}</h2>
             <img src={img1} alt="Monkey Illustration" />
           </div>
           <Formik
@@ -74,9 +82,20 @@ export default function StepTwo(props) {
                 <TextField
                   style={{ marginTop: 30 }}
                   fullWidth
+                  id="phone"
+                  name="phone"
+                  label={t("Phone")}
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  error={formik.touched.phone && Boolean(formik.errors.phone)}
+                  helperText={formik.touched.phone && formik.errors.phone}
+                />
+                <TextField
+                  style={{ marginTop: 30 }}
+                  fullWidth
                   id="password"
                   name="password"
-                  label="Password"
+                  label={t("Password")}
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   error={
@@ -89,7 +108,7 @@ export default function StepTwo(props) {
                   fullWidth
                   id="confirmpassword"
                   name="confirmpassword"
-                  label="Confirm password"
+                  label={t("confirmPassword")}
                   value={formik.values.confirmpassword}
                   onChange={formik.handleChange}
                   error={
@@ -109,7 +128,7 @@ export default function StepTwo(props) {
                       id="consent"
                       onChange={formik.handleChange}
                     />
-                    <span>Terms and conditions</span>
+                    <span> {t("termsConditions")}</span>
                   </label>
                   <p className="MuiFormHelperText-root Mui-error">
                     {formik.errors.consent}
@@ -123,7 +142,7 @@ export default function StepTwo(props) {
                   fullWidth
                   onClick={() => props.prev(formik.values)}
                 >
-                  Back
+                  {t("BackButton")}
                 </Button>
                 <Button
                   style={{ marginTop: 30 }}
@@ -132,7 +151,7 @@ export default function StepTwo(props) {
                   variant="contained"
                   fullWidth
                 >
-                  Submit
+                  {t("SubmitButton")}
                 </Button>
               </form>
             )}

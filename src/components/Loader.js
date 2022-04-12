@@ -9,7 +9,7 @@ export default function Loader() {
     colors: ["#99fffe", "#f42e00", "#042549"],
   };
   return (
-    <div className="loader">
+    <div className="container">
       <GooeyCircleLoader {...loaderProps} />
     </div>
   );

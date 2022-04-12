@@ -5,6 +5,7 @@ import { TextField, Button } from "@material-ui/core";
 import img1 from "../assets/images/monkey1.png";
 import Loader from "./Loader";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const validationSchema = yup.object({
   firstName: yup
@@ -21,10 +22,16 @@ const validationSchema = yup.object({
     .string()
     .min(4, "Username must be at least 4 characters long")
     .max(20, "Username is too long")
+    .matches(
+      /^[a-z0-9\\-\\_]+$/,
+      "Must contain a letter and a number, not special characters"
+    )
     .required("Username is required"),
 });
 
 export default function StepOne(props) {
+  const { t } = useTranslation();
+
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -39,13 +46,13 @@ export default function StepOne(props) {
   };
 
   return (
-    <div className="app">
+    <div className="registration-form">
       {!loaded ? (
         <Loader />
       ) : (
-        <div>
+        <div className="form-container">
           <div className="headerForm">
-            <h2>Registration: Step One</h2>
+            <h2>{t("firstRegister")}</h2>
             <img src={img1} alt="Monkey Illustration" />
           </div>
           <Formik
@@ -59,7 +66,7 @@ export default function StepOne(props) {
                   fullWidth
                   id="firstName"
                   name="firstName"
-                  label="First Name"
+                  label={t("Name")}
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   error={
@@ -74,7 +81,7 @@ export default function StepOne(props) {
                   fullWidth
                   id="lastName"
                   name="lastName"
-                  label="Last Name"
+                  label={t("LastName")}
                   value={formik.values.lastName}
                   onChange={formik.handleChange}
                   error={
@@ -87,7 +94,7 @@ export default function StepOne(props) {
                   fullWidth
                   id="username"
                   name="username"
-                  label="Username"
+                  label={t("Username")}
                   value={formik.values.username}
                   onChange={formik.handleChange}
                   error={
@@ -103,7 +110,7 @@ export default function StepOne(props) {
                   variant="contained"
                   fullWidth
                 >
-                  Next
+                  {t("NextButton")}
                 </Button>
               </form>
             )}

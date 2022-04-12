@@ -1,9 +1,18 @@
 .registration-form {
   display: flex;
   justify-content: center;
-  align-items: center;
   text-align: center;
   min-height: 100vh;
+  margin-top: 50px;
+}
+
+.successMessage {
+  display: block;
+  text-align: center;
+}
+
+.languageSwitcher {
+  text-align: center;
 }
 
 .container {
@@ -16,8 +25,10 @@
     width: 100%;
   }
 
-  .registration-form {
+  .registration-form,
+  .successMessage {
     padding: 50px;
+    padding-top: 0px;
   }
 }
 
