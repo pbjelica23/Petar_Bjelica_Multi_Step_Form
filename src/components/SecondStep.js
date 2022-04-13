@@ -7,34 +7,6 @@ import Loader from "./Loader";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-const validationSchema2 = yup.object({
-  email: yup.string().email("Email is invalid").required("Email is required"),
-  password: yup
-    .string()
-    .required("Please Enter your password")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Password is too weak"
-    ),
-  confirmpassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match")
-    .required("Password confirm is required"),
-  consent: yup
-    .bool()
-    .test(
-      "consent",
-      "You have to agree with our Terms and Conditions!",
-      (value) => value === true
-    )
-    .required("You have to agree with our Terms and Conditions!"),
-  phone: yup
-    .string()
-    .min(8, "Phone is too short")
-    .max(26, "Phone is too long")
-    .required("Phone is required"),
-});
-
 export default function StepTwo(props) {
   const { t } = useTranslation();
 
@@ -64,7 +36,36 @@ export default function StepTwo(props) {
           <Formik
             initialValues={props.data}
             onSubmit={handleSubmit}
-            validationSchema={validationSchema2}
+            validationSchema={yup.object({
+              email: yup
+                .string()
+                .email(t("EmailErrorSecond"))
+                .required(t("EmailError")),
+              password: yup
+                .string()
+                .required(t("PasswordError"))
+                .matches(
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+                  t("PasswordErrorThird")
+                ),
+              confirmPassword: yup
+                .string()
+                .oneOf([yup.ref("password"), null], t("PasswordErrorSecond"))
+                .required(t("confirmPasswordError")),
+              consent: yup
+                .bool()
+                .test(
+                  "consent",
+                  t("termsConditionsError"),
+                  (value) => value === true
+                )
+                .required(t("termsConditionsError")),
+              phone: yup
+                .string()
+                .min(8, t("PhoneErrorSecond"))
+                .max(26, t("PhoneErrorThird"))
+                .required(t("PhoneError")),
+            })}
           >
             {(formik) => (
               <form onSubmit={formik.handleSubmit}>
@@ -106,18 +107,18 @@ export default function StepTwo(props) {
                 <TextField
                   style={{ marginTop: 30 }}
                   fullWidth
-                  id="confirmpassword"
-                  name="confirmpassword"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   label={t("confirmPassword")}
-                  value={formik.values.confirmpassword}
+                  value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   error={
-                    formik.touched.confirmpassword &&
-                    Boolean(formik.errors.confirmpassword)
+                    formik.touched.confirmPassword &&
+                    Boolean(formik.errors.confirmPassword)
                   }
                   helperText={
-                    formik.touched.confirmpassword &&
-                    formik.errors.confirmpassword
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
                   }
                 />
                 <div className="checkbox-field" style={{ marginTop: 30 }}>

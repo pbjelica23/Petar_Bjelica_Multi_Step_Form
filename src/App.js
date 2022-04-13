@@ -19,21 +19,21 @@ function App() {
     email: "",
     phone: "",
     password: "",
-    confirmpassword: "",
+    confirmPassword: "",
     gender: "",
     consent: false,
   });
   const [currentStep, setCurrentStep] = useState(0);
 
-  const makeRequest = (formData) => {
-    console.log(formData);
-  };
+  // const finalStep = (formData) => {
+  //   console.log(formData);
+  // };
 
   const handleNextStep = (newData, final = false) => {
     setData((prev) => ({ ...prev, ...newData }));
 
     if (final) {
-      makeRequest(newData);
+      //finalStep(newData);
       return;
     }
 

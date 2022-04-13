@@ -7,25 +7,6 @@ import Loader from "./Loader";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-const validationSchema = yup.object({
-  firstName: yup
-    .string()
-    .min(2, "First Name is too short")
-    .max(25, "First Name is too long")
-    .required("First Name is required"),
-  lastName: yup
-    .string()
-    .required("Last Name is required")
-    .min(2, "Last Name is too short")
-    .max(25, "Last Name is too long"),
-  username: yup
-    .string()
-    .min(4, "Username is too short")
-    .max(20, "Username is too long")
-    .matches(/^[a-z0-9\\-\\_]+$/, "Can't contain special characters")
-    .required("Username is required"),
-});
-
 export default function StepOne(props) {
   const { t } = useTranslation();
 
@@ -55,7 +36,24 @@ export default function StepOne(props) {
           <Formik
             initialValues={props.data}
             onSubmit={handleSubmit}
-            validationSchema={validationSchema}
+            validationSchema={yup.object({
+              firstName: yup
+                .string()
+                .min(2, t("NameErrorSecond"))
+                .max(25, t("NameErrorThird"))
+                .required(t("NameError")),
+              lastName: yup
+                .string()
+                .required(t("LastNameError"))
+                .min(2, t("LastNameErrorSecond"))
+                .max(25, t("LastNameErrorThird")),
+              username: yup
+                .string()
+                .min(4, t("UsernameErrorSecond"))
+                .max(20, t("UsernameErrorThird"))
+                .matches(/^[a-z0-9\\-\\_]+$/, t("UsernameErrorFourth"))
+                .required(t("UsernameError")),
+            })}
           >
             {(formik) => (
               <form onSubmit={formik.handleSubmit}>
