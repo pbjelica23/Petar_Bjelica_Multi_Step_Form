@@ -20,12 +20,9 @@ const validationSchema = yup.object({
     .max(25, "Last Name is too long"),
   username: yup
     .string()
-    .min(4, "Username must be at least 4 characters long")
+    .min(4, "Username is too short")
     .max(20, "Username is too long")
-    .matches(
-      /^[a-z0-9\\-\\_]+$/,
-      "Must contain a letter and a number, not special characters"
-    )
+    .matches(/^[a-z0-9\\-\\_]+$/, "Can't contain special characters")
     .required("Username is required"),
 });
 

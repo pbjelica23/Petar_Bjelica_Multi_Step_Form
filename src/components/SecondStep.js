@@ -14,7 +14,7 @@ const validationSchema2 = yup.object({
     .required("Please Enter your password")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Must Contain 8 Characters, one Lowercase, one uppercase One Number and one special character"
+      "Password is too weak"
     ),
   confirmpassword: yup
     .string()
@@ -30,7 +30,7 @@ const validationSchema2 = yup.object({
     .required("You have to agree with our Terms and Conditions!"),
   phone: yup
     .string()
-    .min(8, "Phone must be at least 8 characters long")
+    .min(8, "Phone is too short")
     .max(26, "Phone is too long")
     .required("Phone is required"),
 });
